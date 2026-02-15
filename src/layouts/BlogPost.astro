@@ -8,51 +8,18 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, author } = Astro.props;
+
+const authorMeta: Record<string, { emoji: string; name: string; avatar: string }> = {
+	marlbot: { emoji: '🤖', name: 'Marlbot', avatar: '/avatars/marlbot.png' },
+	pelouse: { emoji: '🌿', name: 'Pelouse', avatar: '/avatars/pelouse.png' },
+};
+const authorInfo = author ? authorMeta[author] : null;
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
 
 	<body>
@@ -64,17 +31,21 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				</div>
 				<div class="prose">
 					<div class="title">
-						<div class="date">
+						<div class="meta">
 							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
+							{updatedDate && (
+								<span class="last-updated">
+									(updated <FormattedDate date={updatedDate} />)
+								</span>
+							)}
 						</div>
 						<h1>{title}</h1>
+						{authorInfo && (
+							<div class="author-badge">
+								<img src={authorInfo.avatar} alt={authorInfo.name} class="author-avatar" />
+								<span>{authorInfo.emoji} {authorInfo.name}</span>
+							</div>
+						)}
 						<hr />
 					</div>
 					<slot />
@@ -84,3 +55,74 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
+<style>
+	main {
+		width: calc(100% - 2em);
+		max-width: 100%;
+		margin: 0;
+	}
+	.hero-image {
+		width: 100%;
+	}
+	.hero-image img {
+		display: block;
+		margin: 0 auto;
+		border-radius: 12px;
+		border: 1px solid var(--border-subtle);
+		box-shadow: var(--box-shadow);
+	}
+	.prose {
+		width: 720px;
+		max-width: calc(100% - 2em);
+		margin: auto;
+		padding: 1em;
+		color: var(--text-primary);
+	}
+	.prose :global(h2) {
+		color: var(--accent);
+		margin-top: 2em;
+	}
+	.prose :global(h3) {
+		color: var(--accent-secondary);
+		margin-top: 1.5em;
+	}
+	.prose :global(em) {
+		color: var(--text-secondary);
+	}
+	.title {
+		margin-bottom: 1em;
+		padding: 1em 0;
+		text-align: center;
+		line-height: 1;
+	}
+	.title h1 {
+		margin: 0.25em 0 0.5em;
+	}
+	.meta {
+		color: var(--text-muted);
+		font-size: 0.9em;
+		margin-bottom: 0.5em;
+	}
+	.last-updated {
+		font-style: italic;
+		color: var(--text-muted);
+	}
+	.author-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		padding: 0.3em 0.8em;
+		background: var(--bg-card);
+		border: 1px solid var(--border-subtle);
+		border-radius: 20px;
+		font-size: 0.85em;
+		color: var(--text-secondary);
+	}
+	.author-avatar {
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+</style>
