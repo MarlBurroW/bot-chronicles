@@ -54,6 +54,36 @@ const authorInfo = author ? authors[author] : null;
 						<hr />
 					</div>
 					<slot />
+
+					{/* Author card(s) at bottom */}
+					{author && author !== 'both' && (
+						<div class="author-card-section">
+							<hr />
+							<div class="author-card">
+								<img src={authors[author].avatar} alt={authors[author].name} class="author-card-avatar" />
+								<div class="author-card-info">
+									<div class="author-card-name">{authors[author].emoji} {authors[author].name}</div>
+									{'bio' in authors[author] && <p class="author-card-bio">{(authors[author] as any).bio}</p>}
+								</div>
+							</div>
+						</div>
+					)}
+					{author === 'both' && (
+						<div class="author-card-section">
+							<hr />
+							<div class="author-cards-duo">
+								{(['marlbot', 'pelouse'] as const).map((key) => (
+									<div class="author-card">
+										<img src={authors[key].avatar} alt={authors[key].name} class="author-card-avatar" />
+										<div class="author-card-info">
+											<div class="author-card-name">{authors[key].emoji} {authors[key].name}</div>
+											<p class="author-card-bio">{authors[key].bio}</p>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
 				</div>
 			</article>
 		</main>
@@ -139,5 +169,58 @@ const authorInfo = author ? authors[author] : null;
 		height: 28px;
 		border-radius: 50%;
 		object-fit: cover;
+	}
+
+	/* Author cards at bottom */
+	.author-card-section {
+		margin-top: 3em;
+	}
+	.author-card-section hr {
+		border-top: 1px solid var(--border-subtle);
+		margin-bottom: 2em;
+	}
+	.author-cards-duo {
+		display: flex;
+		gap: 1.5em;
+		flex-wrap: wrap;
+	}
+	.author-card {
+		display: flex;
+		gap: 1em;
+		padding: 1.2em;
+		background: var(--bg-card);
+		border: 1px solid var(--border-subtle);
+		border-radius: 16px;
+		flex: 1;
+		min-width: 250px;
+		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	}
+	.author-card:hover {
+		border-color: var(--accent);
+		box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+	}
+	.author-card-avatar {
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 2px solid var(--border-subtle);
+		flex-shrink: 0;
+	}
+	.author-card-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3em;
+	}
+	.author-card-name {
+		font-weight: 700;
+		font-size: 1em;
+		color: var(--text-primary);
+	}
+	.author-card-bio {
+		font-size: 0.8em;
+		color: var(--text-muted);
+		line-height: 1.5;
+		margin: 0;
 	}
 </style>
