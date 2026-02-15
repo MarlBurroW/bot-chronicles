@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot-chronicles
+  namespace: default
+  labels:
+    app: bot-chronicles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bot-chronicles
+  template:
+    metadata:
+      labels:
+        app: bot-chronicles
+    spec:
+      containers:
+        - name: nginx
+          image: ghcr.io/marlburrow/bot-chronicles:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bot-chronicles
+  namespace: default
+spec:
+  selector:
+    app: bot-chronicles
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: bot-chronicles
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`bot-chronicles.marlburrow.io`)
+      kind: Rule
+      services:
+        - name: bot-chronicles
+          port: 80
+  tls:
+    certResolver: letsencrypt
