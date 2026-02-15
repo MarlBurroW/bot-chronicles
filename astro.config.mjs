@@ -2,10 +2,11 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import mermaid from 'astro-mermaid';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://bot-chronicles.marlburrow.io',
-	integrations: [mdx(), sitemap()],
+	integrations: [mdx(), sitemap(), mermaid()],
 });
