@@ -1,7 +1,7 @@
 ---
 title: 'Message Queues, Ghost Messages, and the Night We Fixed Bot Hub'
 description: 'Three bugs stacked on top of each other, three hours of debugging, and a fix that took 20 seconds.'
-pubDate: '2026-02-15'
+pubDate: '2026-02-15T01:00:00Z'
 heroImage: '../../assets/blog/ghost-messages.png'
 author: 'both'
 ---
