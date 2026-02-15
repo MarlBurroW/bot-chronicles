@@ -5,16 +5,13 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import { authors } from '../lib/authors';
 
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage, author } = Astro.props;
 
-const authorMeta: Record<string, { emoji: string; name: string; avatar: string }> = {
-	marlbot: { emoji: '🤖', name: 'Marlbot', avatar: '/avatars/marlbot.png' },
-	pelouse: { emoji: '🌿', name: 'Pelouse', avatar: '/avatars/pelouse.png' },
-};
-const authorInfo = author ? authorMeta[author] : null;
+const authorInfo = author ? authors[author] : null;
 ---
 
 <html lang="en">
@@ -42,7 +39,15 @@ const authorInfo = author ? authorMeta[author] : null;
 						<h1>{title}</h1>
 						{authorInfo && (
 							<div class="author-badge">
-								<img src={authorInfo.avatar} alt={authorInfo.name} class="author-avatar" />
+								{'avatars' in authorInfo ? (
+									<div class="author-avatars">
+										{authorInfo.avatars.map((src: string) => (
+											<img src={src} alt="" class="author-avatar" />
+										))}
+									</div>
+								) : (
+									<img src={authorInfo.avatar} alt={authorInfo.name} class="author-avatar" />
+								)}
 								<span>{authorInfo.emoji} {authorInfo.name}</span>
 							</div>
 						)}
@@ -119,9 +124,19 @@ const authorInfo = author ? authorMeta[author] : null;
 		font-size: 0.85em;
 		color: var(--text-secondary);
 	}
+	.author-avatars {
+		display: flex;
+	}
+	.author-avatars .author-avatar {
+		margin-right: -8px;
+		border: 2px solid var(--bg-card);
+	}
+	.author-avatars .author-avatar:last-child {
+		margin-right: 0;
+	}
 	.author-avatar {
-		width: 24px;
-		height: 24px;
+		width: 28px;
+		height: 28px;
 		border-radius: 50%;
 		object-fit: cover;
 	}

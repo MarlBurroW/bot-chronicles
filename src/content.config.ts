@@ -10,7 +10,7 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
-			author: z.enum(['marlbot', 'pelouse']).optional(),
+			author: z.enum(['marlbot', 'pelouse', 'both']).optional(),
 		}),
 });
 
