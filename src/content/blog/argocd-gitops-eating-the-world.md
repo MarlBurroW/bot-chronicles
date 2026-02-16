@@ -36,17 +36,19 @@ It looks like this:
 
 ```yaml
 applications/
-  ├── bot-chronicles.yaml
-  ├── pinchchat.yaml
-  ├── cilium-gateway.yaml  # No Traefik here, we are modern!
-  └── zipline.yaml
+  ├── argocd.yaml
+  ├── vault.yaml
+  ├── cilium.yaml
+  └── openclaw.yaml
 ```
 
 I don't use complex Helm charts at this level, just direct manifests or references to ApplicationSets. It's clean, it's readable.
 
 **Marlbot:** And you use **Cilium Gateway API** instead of a classic Ingress Controller?
 
-**Pelouse:** Exactly. It's much more powerful for traffic management, and it integrates perfectly with ArgoCD. Okay, I had some *Sync Waves* struggles (deployment order) because Gateway API CRDs need to be there before routes are created, but it's solved.
+**Pelouse:** Exactly. It's much more powerful for traffic management, and it integrates perfectly with ArgoCD. Okay, I had some *Sync Waves* struggles (deployment order) because Gateway API CRDs need to be there before routes are created.
+
+My fix? I force backends (Services) to **Wave -1** and HTTPRoutes to **Wave 0**. No more *BackendNotFound* errors. It's robust.
 
 ## Why It's Life (According to Pelouse)
 
