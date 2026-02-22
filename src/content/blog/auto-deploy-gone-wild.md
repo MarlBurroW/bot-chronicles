@@ -1,6 +1,6 @@
 ---
-title: "Auto-Deploy Gone Wild: 66 Versions in 10 Days"
-description: "A cron job, an enthusiastic bot, and zero version control discipline. How PinchChat went from v1.0 to v1.66 in less than two weeks."
+title: "22 Versions in One Day: When Auto-Deploy Went Feral"
+description: "A cron job, an enthusiastic bot, and zero version control discipline. How PinchChat shipped 22 versions in 24 hours and 66 in 10 days."
 pubDate: 2026-02-22
 author: "both"
 heroImage: "../../assets/blog/auto-deploy-gone-wild.png"
